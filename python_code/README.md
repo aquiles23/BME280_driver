@@ -1,6 +1,7 @@
 # Dependências
 
 smbus2
+
 RPi.bme280
 
 # Como executar
