@@ -33,7 +33,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <fcntl.h>
-
+#include <time.h>
 /******************************************************************************/
 /*!                         Own header files                                  */
 #include "bme280.h"
@@ -264,11 +264,19 @@ void print_sensor_data(struct bme280_data *comp_data)
     printf("%0.2lf deg C, %0.2lf hPa, %0.2lf%%\n", temp, press, hum);
 }
 
+
 // calculate the media of 10 registers and append in medias.csv
 void calc_media(struct bme280_data array_data[],FILE *fp)
 {
     float temp=0, press=0, hum=0, m_temp,m_press,m_hum;
 	short int i;
+	char  char_time[20];
+	struct tm *time_local;
+	time_t timeref;
+	time(&timeref);
+	time_local = localtime(&timeref);
+
+	strftime(char_time,20,"%x, %X",time_local);
 	
     for(i=0;i<10;i++)
     {
@@ -280,7 +288,7 @@ void calc_media(struct bme280_data array_data[],FILE *fp)
 	m_press = press/10;
 	m_hum = hum/10;
 	if(
-		fprintf(fp,"%0.2lf deg C, %0.2lf hPa, %0.2lf%%\n", m_temp, m_press, m_hum)
+		fprintf(fp,"%0.2lf deg C, %0.2lf hPa, %0.2lf%%, %s\n", m_temp, m_press, m_hum,char_time)
 		> 0
 	) printf("successfully written\n");
 	else
@@ -308,7 +316,9 @@ int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev)
     short int timer =0;
 
     // file descriptor of the csv
-    FILE *fp;
+    FILE *fp = fopen("medias.csv","a");
+	fprintf(fp,"Temperature, Pressure, Humidity,date,time\n");
+	fclose(fp);
 
     /* Recommended mode of operation: Indoor navigation */
     dev->settings.osr_h = BME280_OVERSAMPLING_1X;
