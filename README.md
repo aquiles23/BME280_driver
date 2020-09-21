@@ -3,6 +3,8 @@ Repositório para resolução do <a href="Exercício 2 - I2C.pdf">exercício</a>
 informaçõe gerais sobre as seguintes pastas descritas abaixo, para mais informações sobre
 cada pasta, veja o README desta pasta. 
 
+soluções testadas em uma raspberry py com uma distro linux como sistema operacional
+
 # c_code
 
 Nessa pasta tem um código em c(em conjunto do driver da bosch) que faz realizar  a medida
