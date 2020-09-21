@@ -3,4 +3,8 @@
 entre na pasta examples e digite:
 	
 	make raspbian
-	./bme280
+	make run
+
+caso o i2c não se localize no /dev/i2c-1 , no lugar do 'make run' digite:
+
+	./bme280 local_do_i2c
