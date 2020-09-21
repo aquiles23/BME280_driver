@@ -1,4 +1,4 @@
-Repositório para resolução do [excercício](./Exercício 2 - I2C.pdf). 
+Repositório para resolução do <a href="Exercício 2 - I2C.pdf">exercício</a>. 
 
 informaçõe gerais sobre as seguintes pastas descritas abaixo, para mais informações sobre
 cada pasta, veja o README desta pasta. 
