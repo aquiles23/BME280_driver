@@ -264,6 +264,29 @@ void print_sensor_data(struct bme280_data *comp_data)
     printf("%0.2lf deg C, %0.2lf hPa, %0.2lf%%\n", temp, press, hum);
 }
 
+// calculate the media of 10 registers and append in medias.csv
+void calc_media(struct bme280_data array_data[],FILE *fp)
+{
+    float temp=0, press=0, hum=0, m_temp,m_press,m_hum;
+	short int i;
+	
+    for(i=0;i<10;i++)
+    {
+    	temp += array_data[i].temperature;
+    	press += 0.01 * array_data[i].pressure;
+    	hum += array_data[i].humidity;
+	}
+	m_temp = temp/10;
+	m_press = press/10;
+	m_hum = hum/10;
+	if(
+		fprintf(fp,"%0.2lf deg C, %0.2lf hPa, %0.2lf%%\n", m_temp, m_press, m_hum)
+		> 0
+	) printf("successfully written\n");
+	else
+	printf("write error\n ");
+}
+
 /*!
  * @brief This API reads the sensor temperature, pressure and humidity data in forced mode.
  */
@@ -279,7 +302,13 @@ int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev)
     uint32_t req_delay;
 
     /* Structure to get the pressure, temperature and humidity values */
-    struct bme280_data comp_data;
+    struct bme280_data comp_data, array_data[10];
+
+	// used to control when to load files to CSV
+    short int timer =0;
+
+    // file descriptor of the csv
+    FILE *fp;
 
     /* Recommended mode of operation: Indoor navigation */
     dev->settings.osr_h = BME280_OVERSAMPLING_1X;
@@ -324,7 +353,20 @@ int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev)
             break;
         }
 
+		array_data[timer] = comp_data;
+
         print_sensor_data(&comp_data);
+
+        // after 10 seconds, restart timer and throw the media of the that in the medias.csv
+        if(timer >= 9)
+        {
+        	fp = fopen("medias.csv","a");
+			timer = -1;
+			calc_media(array_data,fp);
+			fclose(fp);
+        }
+        sleep(1);
+        timer++;
     }
 
     return rslt;

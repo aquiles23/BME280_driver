@@ -8,3 +8,4 @@ run:
 	./bme280 /dev/i2c-1
 clean:
 	rm -v bme280
+	rm -v medias.csv
