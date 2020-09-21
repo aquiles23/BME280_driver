@@ -1,3 +1,5 @@
+o código usado no exercício foi o [code.py](code.py)
+
 # Dependências
 
 smbus2
