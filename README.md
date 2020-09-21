@@ -1,3 +1,5 @@
+Repositório para resolução do [excercício]('Exercício 2 - I2C.pdf'). 
+
 informaçõe gerais sobre as seguintes pastas descritas abaixo, para mais informações sobre
 cada pasta, veja o README desta pasta. 
 
