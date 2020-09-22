@@ -316,7 +316,7 @@ int8_t stream_sensor_data_forced_mode(struct bme280_dev *dev)
     short int timer =0;
 
     // file descriptor of the csv
-    FILE *fp = fopen("medias.csv","a");
+    FILE *fp = fopen("medias.csv","w");
 	fprintf(fp,"Temperature, Pressure, Humidity,date,time\n");
 	fclose(fp);
 
